@@ -1,1 +1,12 @@
 WORK_ONCE_NOTE (resume anchor)
+
+✔ Oct 2, 2025: 
+- Repo pushed to GitHub (main branch).
+- CI workflow added (frontend build + backend sanity).
+- Alembic migrations applied (users, posts).
+- Docker stack stable (api:8001, frontend:3000, redis:6380, postgres:5432, minio:9000/9001).
+
+⏭ Next:
+- Add real .env (secrets, DB URL, MinIO creds, JWT secret).
+- Implement user auth APIs in FastAPI.
+WORK_ONCE_NOTE (resume anchor)
