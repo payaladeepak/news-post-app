@@ -1,12 +1,66 @@
 WORK_ONCE_NOTE (resume anchor)
 
-✔ Oct 2, 2025: 
-- Repo pushed to GitHub (main branch).
-- CI workflow added (frontend build + backend sanity).
-- Alembic migrations applied (users, posts).
-- Docker stack stable (api:8001, frontend:3000, redis:6380, postgres:5432, minio:9000/9001).
+# NEWS-POST-APP — WORK_ONCE_NOTE
+Last updated: Oct 2, 2025
+Resume anchor: NEWS-POST-APP → deploy@srv1009557
 
-⏭ Next:
-- Add real .env (secrets, DB URL, MinIO creds, JWT secret).
-- Implement user auth APIs in FastAPI.
+## Quick connect (executor first step)
+# From your workstation (if not already on server)
+ssh deploy@srv1009557
+# Server IP: 82.112.226.228
+# On server path:
+cd /home/deploy/news-post-app
+
+## Verified state (✔ Oct 2, 2025)
+- Repo pushed to GitHub (main branch).
+- CI workflow present (frontend build + backend sanity).
+- Alembic migrations applied (users, posts).
+- Docker stack stable: api:8001, frontend:3000, redis:6380, postgres:5432, minio:9000/9001.
+
+## Next immediate tasks (executor checklist)
+1. Add real environment file
+   - Path: /home/deploy/news-post-app/.env
+   - Required keys (example placeholders):
+     DATABASE_URL=postgresql://news_user:Duk@ndar2025!@127.0.0.1:5432/newsdb
+     MINIO_ACCESS_KEY=MINIO_ACCESS_KEY_PLACEHOLDER
+     MINIO_SECRET_KEY=MINIO_SECRET_KEY_PLACEHOLDER
+     MINIO_ENDPOINT=http://127.0.0.1:9000
+     JWT_SECRET=CHANGE_THIS_JWT_SECRET
+     SENDER_EMAIL=deepak.amarujala25@gmail.com
+   - Note: use file permissions `chmod 600 .env`
+
+2. Git push / credentials
+   - Preferred: add deploy SSH key to your GitHub account and set remote to git@github.com:payaladeepak/news-post-app.git
+   - Quick check:
+     git remote -v
+     git push origin main
+   - If HTTPS prompting credentials, set up personal access token or switch remote to SSH.
+
+3. Docker & migrations
+   - Inspect stack:
+     sudo docker compose -f docker-compose.yml ps
+   - To apply DB migrations (if using Alembic):
+     sudo docker compose exec api alembic upgrade head
+   - To restart stack:
+     sudo docker compose -f docker-compose.yml pull
+     sudo docker compose -f docker-compose.yml up -d --remove-orphans
+
+4. Healthchecks (verify services)
+   - API: curl -fsS http://127.0.0.1:8001/health || true
+   - Frontend: curl -fsS http://127.0.0.1:3000 || true
+
+5. Secrets & Vault
+   - If you plan to rotate credentials, update .env and restart the stack.
+   - Backup .env (encrypted) before changing.
+
+## Notes for executor
+- Keep copies of changed files in /home/deploy/news-post-app/backups with timestamp before any overwrite.
+- If CI failed after push, check actions logs on GitHub and server-side logs: sudo docker compose logs api --tail=200
+- Use `sudo journalctl -u docker.service -n 200` for low-level docker errors.
+
+## Contact / rollback
+- Contact (owner): Deepak — deepak.amarujala25@gmail.com
+- Quick rollback plan: if new .env breaks app, restore from /home/deploy/news-post-app/backups/.env.TIMESTAMP and `sudo docker compose up -d`
+
 WORK_ONCE_NOTE (resume anchor)
+

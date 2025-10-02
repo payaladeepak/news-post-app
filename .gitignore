@@ -1,0 +1,16 @@
+# local env & backups
+.env
+backups/
+*.tar.gz
+
+# node / build
+apps/frontend/node_modules
+.next
+out
+
+# temp / editor
+*.swp
+.DS_Store
+
+# compose backups
+/home/deploy/news-post-app/infra/docker-compose.yml.bak*
